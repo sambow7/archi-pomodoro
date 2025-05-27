@@ -1,11 +1,18 @@
 # pomodoro_timer.py
-
+import os
+import platform
 import time
 
 WORK_DURATION = 25 * 60  # 25 minutes
 BREAK_DURATION = 5 * 60  # 5 minutes
 LONG_BREAK = 15 * 60     # Optional long break
 SESSIONS_BEFORE_LONG_BREAK = 4
+
+def beep():
+    if platform.system() == "Darwin":  # macOS
+        os.system("say 'Time is up!'")
+    elif platform.system() == "Linux":  # Raspberry Pi
+        os.system("aplay /usr/share/sounds/alsa/Front_Center.wav")  # Or your own sound file
 
 def countdown(seconds):
     while seconds:
@@ -15,6 +22,7 @@ def countdown(seconds):
         time.sleep(1)
         seconds -= 1
     print("\n\033[92m🔔 Time's up!\033[0m")
+    beep()
 
 def pomodoro():
     session_count = 0
