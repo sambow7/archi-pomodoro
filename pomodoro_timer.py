@@ -3,16 +3,41 @@ import os
 import platform
 import time
 
+try:
+    import RPi.GPIO as GPIO
+    from sense_hat import SenseHat
+    SENSE_HAT_AVAILABLE = True
+    sense = SenseHat()
+except (ImportError, RuntimeError):
+    SENSE_HAT_AVAILABLE = False
+    GPIO = None
+
 WORK_DURATION = 25 * 60  # 25 minutes
 BREAK_DURATION = 5 * 60  # 5 minutes
 LONG_BREAK = 15 * 60     # Optional long break
 SESSIONS_BEFORE_LONG_BREAK = 4
 
+LED_PIN = 18  # Use GPIO18
+if GPIO:
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(LED_PIN, GPIO.OUT)
+
 def beep():
     if platform.system() == "Darwin":  # macOS
         os.system("say 'Time is up!'")
     elif platform.system() == "Linux":  # Raspberry Pi
-        os.system("aplay /usr/share/sounds/alsa/Front_Center.wav")  # Or your own sound file
+        os.system("aplay /usr/share/sounds/alsa/Front_Center.wav")
+
+    if GPIO:
+        for _ in range(5):
+            GPIO.output(LED_PIN, GPIO.HIGH)
+            time.sleep(0.3)
+            GPIO.output(LED_PIN, GPIO.LOW)
+            time.sleep(0.3)
+
+    if SENSE_HAT_AVAILABLE:
+        sense.show_message("Time's Up!", text_colour=[0, 255, 0])
+        sense.clear()
 
 def countdown(seconds):
     while seconds:
@@ -41,6 +66,8 @@ def pomodoro():
                 countdown(BREAK_DURATION)
     except KeyboardInterrupt:
         print("\n\033[92m⏹️ Timer stopped. Good work!\033[0m")
+        if GPIO:
+            GPIO.cleanup()
 
 if __name__ == "__main__":
     pomodoro()
