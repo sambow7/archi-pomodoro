@@ -12,8 +12,8 @@ except (ImportError, RuntimeError):
     SENSE_HAT_AVAILABLE = False
     GPIO = None
 
-WORK_DURATION = 25 * 60  # 25 minutes
-BREAK_DURATION = 5 * 60  # 5 minutes
+WORK_DURATION = 10  # 10 seconds for testing
+BREAK_DURATION = 5  # 5 seconds
 LONG_BREAK = 15 * 60     # Optional long break
 SESSIONS_BEFORE_LONG_BREAK = 4
 
