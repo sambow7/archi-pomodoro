@@ -40,7 +40,6 @@ def beep():
             [0, 255, 0],     # Green
             [255, 255, 0],   # Yellow
             [255, 165, 0],   # Orange
-            [255, 0, 0],     # Red
             [0, 0, 0]        # Off (black)
     ]
 
@@ -50,7 +49,7 @@ def beep():
             time.sleep(0.15)
     
     # Final glitchy red alert scroll
-    sense.show_message("Time's Up!", text_colour=[255, 0, 0])
+    sense.show_message("Time's Up!", text_colour=[0, 255, 0])
     sense.clear()
     
     
