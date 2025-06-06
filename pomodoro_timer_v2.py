@@ -36,9 +36,24 @@ def beep():
             time.sleep(0.3)
 
     if SENSE_HAT_AVAILABLE:
-        sense.show_message("Time's Up!", text_colour=[255, 0, 0])
-        sense.clear()
+        alert_colors = [
+            [0, 255, 0],     # Green
+            [255, 255, 0],   # Yellow
+            [255, 165, 0],   # Orange
+            [255, 0, 0],     # Red
+            [0, 0, 0]        # Off (black)
+    ]
 
+    for _ in range(3):  # Repeat full sequence 3 times
+        for color in alert_colors:
+            sense.set_pixels([color] * 64)
+            time.sleep(0.15)
+    
+    # Final glitchy red alert scroll
+    sense.show_message("Time's Up!", text_colour=[255, 0, 0])
+    sense.clear()
+    
+    
 def update_led_progress(elapsed, total, color):
     if not SENSE_HAT_AVAILABLE:
         return
