@@ -122,6 +122,20 @@ def countdown(seconds, session_type):
     print("\n🔔 Time's up!")
     beep()
 
+def countdown_animation():
+    if SENSE_HAT_AVAILABLE:
+        for i in range(3, 0, -1):
+            sense.show_message(str(i), text_colour=[255, 0, 0])
+            time.sleep(0.5)
+        sense.show_message("GO!", text_colour=[0, 255, 0])
+        time.sleep(0.5)
+        sense.clear()
+    else:
+        for i in range(3, 0, -1):
+            print(f"\rStarting in {i}...", end="")
+            time.sleep(1)
+        print("\rGO!          ")
+
 def pomodoro():
     global session_active, should_exit, is_paused
     session_count = 0
@@ -138,6 +152,7 @@ def pomodoro():
                 continue
 
             print(f"\n🍅 Pomodoro session #{session_count + 1} starting!")
+            countdown_animation()
             countdown(WORK_DURATION, "work")
             if should_exit:
                 break
@@ -146,9 +161,11 @@ def pomodoro():
 
             if session_count % SESSIONS_BEFORE_LONG_BREAK == 0:
                 print("\n🌴 Long break starting...")
+                countdown_animation()
                 countdown(LONG_BREAK, "break")
             else:
                 print("\n☕ Short break starting...")
+                countdown_animation()
                 countdown(BREAK_DURATION, "break")
 
             if should_exit:
