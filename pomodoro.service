@@ -1,0 +1,14 @@
+[Unit]
+Description=Pomodoro Timer Service
+After=multi-user.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/archi_pomodoro
+ExecStart=/usr/bin/python3 /home/pi/archi_pomodoro/pomodoro_timer_v3.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target 
